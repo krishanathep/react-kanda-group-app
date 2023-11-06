@@ -1,0 +1,10 @@
+body {
+    font-family: "Prompt";
+  }
+  code {
+    font-family: "Prompt";
+  }
+  
+  .dropdown-menu {
+    min-width: 4rem;
+  }
