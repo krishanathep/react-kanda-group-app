@@ -112,7 +112,7 @@ const blogs = () => {
         });
         axios
           .delete(
-            "https://full-stack-app.com/laravel_auth_jwt_api/public/api/blog-delete/" +
+            "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-delete/" +
               blogs.id
           )
           .then((res) => {
@@ -147,32 +147,37 @@ const blogs = () => {
     setEditShow(true);
     await axios
       .get(
-        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/blog/" +
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document/" +
           blogs.id
       )
       .then((res) => {
-        setEditId(res.data.blog.id);
+        setEditId(res.data.documents.id);
         console.log(res);
         reset({
-          title: res.data.blog.title,
-          content: res.data.blog.content,
-          author: res.data.blog.author,
+          title: res.data.documents.title,
+          content: res.data.documents.content,
+          category: res.data.documents.category,
+          department: res.data.documents.department,
+          author: res.data.documents.author,
         });
       });
   };
 
   const handleEditSubmit = async (data) => {
+    
     const formData = new FormData();
 
     formData.append("_method", "put");
-    formData.append("image", data.image[0]);
+    formData.append("path", data.path[0]);
     formData.append("title", data.title);
     formData.append("content", data.content);
+    formData.append("category", data.category);
+    formData.append("department", data.department);
     formData.append("author", data.author);
 
     await axios
       .post(
-        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/blog-update/" +
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-update/" +
           editid,
         formData
       )
@@ -275,6 +280,9 @@ const blogs = () => {
                       </div>
                     </div>
                     <DataTable
+                      // style={{
+                      //   fontFamily: "Prompt",
+                      // }}
                       withBorder
                       highlightOnHover
                       fontSize={"md"}
@@ -408,6 +416,7 @@ const blogs = () => {
                             <Form.Group as={Col} md="12">
                               <Form.Label>Author</Form.Label>
                               <Form.Control
+                                readOnly
                                 value={userDatail().name}
                                 {...register("author", { required: true })}
                               />
@@ -478,8 +487,31 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
+                              <Form.Label>Category</Form.Label>
+                              <Form.Control
+                                {...register("category", { required: true })}
+                              />
+                              {errors.category && (
+                                <span className="text-danger">
+                                  This field is required
+                                </span>
+                              )}
+                            </Form.Group>
+                            <Form.Group as={Col} md="12">
+                              <Form.Label>Department</Form.Label>
+                              <Form.Control
+                                {...register("department", { required: true })}
+                              />
+                              {errors.department && (
+                                <span className="text-danger">
+                                  This field is required
+                                </span>
+                              )}
+                            </Form.Group>
+                            <Form.Group as={Col} md="12">
                               <Form.Label>Author</Form.Label>
                               <Form.Control
+                                readOnly
                                 {...register("author", { required: true })}
                               />
                               {errors.author && (
@@ -493,10 +525,10 @@ const blogs = () => {
                               <br />
                               <input
                                 type="file"
-                                {...register("image", { required: false })}
+                                {...register("path", { required: false })}
                               />
                               <br />
-                              {errors.image && (
+                              {errors.path && (
                                 <span className="text-danger">
                                   This field is required
                                 </span>
