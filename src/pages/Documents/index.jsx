@@ -21,6 +21,8 @@ const blogs = () => {
     reset({
       title: "",
       content: "",
+      category: "",
+      department: ""
     });
     setCreateShow(false);
   };
@@ -37,6 +39,8 @@ const blogs = () => {
       image: "",
       title: "",
       content: "",
+      category: "",
+      department: "",
       author: "",
     });
     setViewShow(false);
@@ -66,9 +70,11 @@ const blogs = () => {
   //blogs state
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState('')
+  const [department, setDepartment] = useState('')
   const [author, setAuthor] = useState("");
   const [created, setCreated] = useState("");
-  const [image, setImage] = useState("");
+  const [path, setPath] = useState("");
 
   const getData = async () => {
     const from = (page - 1) * pageSize;
@@ -122,16 +128,18 @@ const blogs = () => {
 
     await axios
       .get(
-        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/blog/" +
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document/" +
           blogs.id
       )
       .then((res) => {
         console.log(res);
-        setTitle(res.data.blog.title);
-        setContent(res.data.blog.content);
-        setAuthor(res.data.blog.author);
-        setCreated(res.data.blog.created_at);
-        setImage(res.data.blog.image);
+        setTitle(res.data.documents.title);
+        setContent(res.data.documents.content);
+        setCategory(res.data.documents.category);
+        setDepartment(res.data.documents.department);
+        setAuthor(res.data.documents.author);
+        setCreated(res.data.documents.created_at);
+        setPath(res.data.documents.path);
       });
   };
 
@@ -193,14 +201,16 @@ const blogs = () => {
 
     const formData = new FormData();
 
-    formData.append("image", data.image[0]);
+    formData.append("path", data.path[0]);
     formData.append("title", data.title);
     formData.append("content", data.content);
+    formData.append("category", data.category);
+    formData.append("department", data.department);
     formData.append("author", data.author);
 
     await axios
       .post(
-        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/blog-create",
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-create",
         formData
       )
       .then((res) => {
@@ -209,6 +219,8 @@ const blogs = () => {
         reset({
           title: "",
           content: "",
+          category: "",
+          department: "",
           author: "",
         });
         setCreateShow(false);
@@ -280,21 +292,21 @@ const blogs = () => {
                           render: (record) => records.indexOf(record) + 1,
                         },
                         { accessor: "title",
-                          title: "ชื่อเอกสาร"},
+                          title: "เอกสาร"},
                         { accessor: "content",
                           title: "รายละเอียด" },
                         { accessor: "category",
                           title: "ประเภท" },
                         { accessor: "department",
-                          title: "แผนก" },
+                          title: "หน่วยงาน" },
                         { accessor: "author",
-                          title: "อัพโหลดโดย" },
+                          title: "สร้างโดย" },
                         {
                           accessor: "created_at",
-                          title: "วันที่อัพโหลด",
+                          title: "วันที่สร้าง",
                           textAlignment: "center",
                           render: ({ created_at }) =>
-                            dayjs(created_at).format("DD-MMMM- YYYY"),
+                            dayjs(created_at).format("DD-MMM-YYYY"),
                         },
                         {
                           accessor: "actions",
@@ -370,6 +382,30 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
+                              <Form.Label>Category</Form.Label>
+                              <Form.Control
+                                placeholder="Enter your category"
+                                {...register("category", { required: true })}
+                              />
+                              {errors.category && (
+                                <span className="text-danger">
+                                  This field is required
+                                </span>
+                              )}
+                            </Form.Group>
+                            <Form.Group as={Col} md="12">
+                              <Form.Label>Department</Form.Label>
+                              <Form.Control
+                                placeholder="Enter your department"
+                                {...register("department", { required: true })}
+                              />
+                              {errors.department && (
+                                <span className="text-danger">
+                                  This field is required
+                                </span>
+                              )}
+                            </Form.Group>
+                            <Form.Group as={Col} md="12">
                               <Form.Label>Author</Form.Label>
                               <Form.Control
                                 value={userDatail().name}
@@ -386,10 +422,10 @@ const blogs = () => {
                               <br />
                               <input
                                 type="file"
-                                {...register("image", { required: true })}
+                                {...register("path", { required: true })}
                               />
                               <br />
-                              {errors.image && (
+                              {errors.path && (
                                 <span className="text-danger">
                                   This field is required
                                 </span>
@@ -488,15 +524,6 @@ const blogs = () => {
                         <Modal.Title>Webboard view</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <Image
-                          className="mb-3"
-                          src={
-                            "https://full-stack-app.com/laravel_auth_jwt_api/public/uploads/" +
-                            image
-                          }
-                          width={"500"}
-                          thumbnail
-                        />
                         <Form.Group>
                           <Form.Label>Title</Form.Label> : {title}
                         </Form.Group>
@@ -504,11 +531,17 @@ const blogs = () => {
                           <Form.Label>Content</Form.Label> : {content}
                         </Form.Group>
                         <Form.Group>
+                          <Form.Label>Category</Form.Label> : {category}
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Label>Department</Form.Label> : {department}
+                        </Form.Group>
+                        <Form.Group>
                           <Form.Label>Author</Form.Label> : {author}
                         </Form.Group>
                         <Form.Group>
                           <Form.Label>Created</Form.Label> :{" "}
-                          {dayjs(created).format("DD-MMMM- YYYY")}
+                          {dayjs(created).format("DD-MMMM-YYYY")}
                         </Form.Group>
                       </Modal.Body>
                       <Modal.Footer>
