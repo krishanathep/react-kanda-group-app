@@ -22,11 +22,11 @@ export default function Sidebar() {
               role="menu"
               data-accordion="false"
             >
-              <li className="nav-header">MAIN MENU</li>
+              <li className="nav-header">เมนูหลัก</li>
               <li className="nav-item">
                 <Link to="/" className="nav-link">
                   <i className="nav-icon fas fa-home"></i>
-                  <p>Dashboard</p>
+                  <p>หน้าแรก</p>
                 </Link>
               </li>
               {/* <li className="nav-item">
@@ -48,9 +48,9 @@ export default function Sidebar() {
                 </Link>
               </li> */}
               <li className="nav-item">
-                <Link to="/blogs" className="nav-link">
+                <Link to="/documents" className="nav-link">
                   <i className="nav-icon fas fa-file-pdf"></i>
-                  <p>Documents</p>
+                  <p>เอกสาร</p>
                 </Link>
               </li>
               {/* <li className="nav-item">
