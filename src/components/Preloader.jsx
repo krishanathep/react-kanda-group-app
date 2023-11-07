@@ -2,9 +2,9 @@ import React from "react";
 
 const Preloader = () => {
   return (
-    <div class="preloader flex-column justify-content-center align-items-center">
+    <div className="preloader flex-column justify-content-center align-items-center">
       <img
-        class="animation__shake"
+        className="animation__shake"
         src="/assets/dist/img/AdminLTELogo.png"
         alt="AdminLTELogo"
         height="60"

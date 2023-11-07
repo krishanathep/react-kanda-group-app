@@ -5,7 +5,7 @@ export default function Sidebar() {
   return (
     <>
       <aside className="main-sidebar nav-pills sidebar-dark-primary sidebar-no-expand elevation-1">
-        <p className="brand-link">
+        <Link to="/" className="brand-link">
           <img
             src="/assets/dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"
@@ -13,7 +13,7 @@ export default function Sidebar() {
             style={{ opacity: ".8" }}
           />
           <span className="brand-text font-weight-light">AdminLTE 3</span>
-        </p>
+        </Link>
         <div className="sidebar">
           <nav className="mt-2">
             <ul
@@ -22,18 +22,56 @@ export default function Sidebar() {
               role="menu"
               data-accordion="false"
             >
+              <li className="nav-header">MAIN MENU</li>
               <li className="nav-item">
                 <Link to="/" className="nav-link">
-                  <i className="nav-icon fas fa-map-marker-alt"></i>
-                  <p>หน้าแรก</p>
+                  <i className="nav-icon fas fa-home"></i>
+                  <p>Dashboard</p>
+                </Link>
+              </li>
+              {/* <li className="nav-item">
+                <Link to="/restaurant" className="nav-link">
+                  <i className="nav-icon fas fa-utensils"></i>
+                  <p>Restaurent</p>
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/documents" className="nav-link">
-                  <i className="nav-icon fas fa-utensils"></i>
-                  <p>เอกสารออนไลน์</p>
+                <Link to="/foods" className="nav-link">
+                  <i className="nav-icon fas fa-hamburger"></i>
+                  <p>Foods</p>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/meetings" className="nav-link">
+                  <i className="nav-icon fas fa-calendar"></i>
+                  <p>Meetings</p>
+                </Link>
+              </li> */}
+              <li className="nav-item">
+                <Link to="/blogs" className="nav-link">
+                  <i className="nav-icon fas fa-file-pdf"></i>
+                  <p>Documents</p>
+                </Link>
+              </li>
+              {/* <li className="nav-item">
+                <Link to="/movies" className="nav-link">
+                  <i className="nav-icon fas fa-photo-video"></i>
+                  <p>Movies</p>
+                </Link>
+              </li>
+              <li className="nav-header">TEST MENU</li>
+              <li className="nav-item">
+                <Link to="/test/table" className="nav-link">
+                  <i className="nav-icon fas fa-vial"></i>
+                  <p>Table</p>
+                </Link>
+              </li>
+               <li className="nav-item">
+                <Link to="/chart" className="nav-link">
+                  <i className="nav-icon fas fa-chart-pie"></i>
+                  <p>Chart</p>
+                </Link>
+              </li> */}
             </ul>
           </nav>
         </div>
