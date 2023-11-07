@@ -5,7 +5,7 @@ import WithNavbar from "./layouts/WithNavbar";
 import WithOutnavbar from "./layouts/WithOutnavbar";
 import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
-import Home from "./pages/home";
+import Home from './pages/Home'
 import Documents from './pages/Documents'
 
 const RoutesPage = () => {
