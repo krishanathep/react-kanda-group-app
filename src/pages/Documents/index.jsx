@@ -22,7 +22,7 @@ const blogs = () => {
       title: "",
       content: "",
       category: "",
-      department: ""
+      department: "",
     });
     setCreateShow(false);
   };
@@ -70,8 +70,8 @@ const blogs = () => {
   //blogs state
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState('')
-  const [department, setDepartment] = useState('')
+  const [category, setCategory] = useState("");
+  const [department, setDepartment] = useState("");
   const [author, setAuthor] = useState("");
   const [created, setCreated] = useState("");
   const [path, setPath] = useState("");
@@ -81,7 +81,9 @@ const blogs = () => {
     const to = from + pageSize;
 
     await axios
-      .get("https://full-stack-app.com/laravel_auth_jwt_api/public/api/documents")
+      .get(
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/documents"
+      )
       .then((res) => {
         setBlogs(res.data.documents);
         setRecords(res.data.documents.slice(from, to));
@@ -164,7 +166,6 @@ const blogs = () => {
   };
 
   const handleEditSubmit = async (data) => {
-    
     const formData = new FormData();
 
     formData.append("_method", "put");
@@ -283,7 +284,6 @@ const blogs = () => {
                       style={{
                         fontFamily: "Prompt",
                       }}
-                    
                       withBorder
                       highlightOnHover
                       fontSize={"md"}
@@ -300,19 +300,17 @@ const blogs = () => {
                           width: 80,
                           render: (record) => records.indexOf(record) + 1,
                         },
-                        { accessor: "title",
-                          title: "เอกสาร"},
-                        { accessor: "content",
-                          title: "รายละเอียด" },
-                        { accessor: "category",
-                          title: "ประเภท" },
-                        { accessor: "department",
-                          title: "หน่วยงาน" },
-                        { accessor: "author",
-                          title: "สร้างโดย" },
+                        {
+                          accessor: "title",
+                          title: "ชื่อเอกสาร",
+                        },
+                        { accessor: "content", title: "รายละเอียด" },
+                        { accessor: "category", title: "ประเภท" },
+                        { accessor: "department", title: "หน่วยงาน" },
+                        { accessor: "author", title: "จัดทำโดย" },
                         {
                           accessor: "created_at",
-                          title: "วันที่สร้าง",
+                          title: "วันที่จัดทำ",
                           textAlignment: "center",
                           render: ({ created_at }) =>
                             dayjs(created_at).format("DD-MMM-YYYY"),
@@ -325,12 +323,22 @@ const blogs = () => {
                           render: (blogs) => (
                             <>
                               <Button
-                                variant="primary" 
+                                variant="primary"
                                 size="sm"
                                 onClick={() => handleViewShow(blogs)}
                               >
                                 <i className="fa fa-eye"></i>
                               </Button>{" "}
+                              <a
+                                className="btn btn-info btn-sm"
+                                target="_blank"
+                                href={
+                                  "https://full-stack-app.com/laravel_auth_jwt_api/public/uploads/documents/" +
+                                  blogs.path
+                                }
+                              >
+                                <i className="fa fa-download"></i>
+                              </a>{" "}
                               <Button
                                 variant="info"
                                 size="sm"
@@ -361,13 +369,13 @@ const blogs = () => {
                     {/* Create Blog Madal */}
                     <Modal centered show={createShow}>
                       <Modal.Header>
-                        <Modal.Title>Webboard create</Modal.Title>
+                        <Modal.Title>เพิ่มเอกสาร</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Form>
                           <Row>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Title</Form.Label>
+                              <Form.Label>ชื่อเอกสาร</Form.Label>
                               <Form.Control
                                 placeholder="Enter your title"
                                 {...register("title", { required: true })}
@@ -378,12 +386,21 @@ const blogs = () => {
                                 </span>
                               )}
                             </Form.Group>
-                            <Form.Group as={Col} md="12">
-                              <Form.Label>Content</Form.Label>
-                              <Form.Control
+                            {/* <Form.Group as={Col} md="12">
+                              <Form.Label>รายละเอียด</Form.Label> */}
+                              {/* <Form.Control
                                 placeholder="Enter your content"
                                 {...register("content", { required: true })}
-                              />
+                              /> */}
+                              <Form.Group
+                              as={Col} md="12"
+                                controlId="exampleForm.ControlTextarea1"
+                              >
+                                <Form.Label>รายละเอียด</Form.Label>
+                                <Form.Control as="textarea" rows={3} 
+                                placeholder="Enter your content"
+                                {...register("content", { required: true })}
+                                />
                               {errors.content && (
                                 <span className="text-danger">
                                   This field is required
@@ -391,11 +408,32 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Category</Form.Label>
-                              <Form.Control
+                              <Form.Label>ประเภท</Form.Label>
+                              {/* <Form.Control
                                 placeholder="Enter your category"
                                 {...register("category", { required: true })}
-                              />
+                              /> */}
+                              <select
+                                className="form-control"
+                                aria-label="Default select example"
+                                {...register("category", { required: true })}
+                              >
+                                <option selected value="">
+                                  เลือกประเภท
+                                </option>
+                                <option value="เอกสารบริษัท">
+                                  เอกสารบริษัท
+                                </option>
+                                <option value="เอกสารจัดซื้อ">
+                                  เอกสารจัดซื้อ
+                                </option>
+                                <option value="เอกสารประกาศ">
+                                  เอกสารประกาศ
+                                </option>
+                                <option value="เอกสารทั่วไป">
+                                  เอกสารทั่วไป
+                                </option>
+                              </select>
                               {errors.category && (
                                 <span className="text-danger">
                                   This field is required
@@ -403,11 +441,25 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Department</Form.Label>
-                              <Form.Control
+                              <Form.Label>หน่วยงาน</Form.Label>
+                              {/* <Form.Control
                                 placeholder="Enter your department"
                                 {...register("department", { required: true })}
-                              />
+                              /> */}
+                              <select
+                                className="form-control"
+                                aria-label="Default select example"
+                                {...register("department", { required: true })}
+                              >
+                                <option selected value="">
+                                  เลือกหน่วยงาน
+                                </option>
+                                <option value="การขาย">การขาย</option>
+                                <option value="การตลาด">การตลาด</option>
+                                <option value="ไอที">ไอที</option>
+                                <option value="ฝ่ายบุคคล">ฝ่ายบุคคล</option>
+                                <option value="ฝ่ายวางแผน">ฝ่ายวางแผน</option>
+                              </select>
                               {errors.department && (
                                 <span className="text-danger">
                                   This field is required
@@ -415,7 +467,7 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Author</Form.Label>
+                              <Form.Label>จัดทำโดย</Form.Label>
                               <Form.Control
                                 readOnly
                                 value={userDatail().name}
@@ -428,7 +480,7 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <div className="form-group ml-2">
-                              <label htmlFor="">File upload</label>
+                              <label htmlFor="">ไฟล์อัพโหลด</label>
                               <br />
                               <input
                                 type="file"
@@ -449,7 +501,7 @@ const blogs = () => {
                           variant="primary"
                           onClick={handleSubmit(handleCreateSubmit)}
                         >
-                          Save Changes
+                          Submit
                         </Button>
                         <Button variant="secondary" onClick={CreateClose}>
                           Close
@@ -460,13 +512,13 @@ const blogs = () => {
                     {/* Edit Blog Madal */}
                     <Modal centered show={editShow}>
                       <Modal.Header>
-                        <Modal.Title>Webboard update</Modal.Title>
+                        <Modal.Title>แก้ไขเอกสาร</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Form>
                           <Row>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Title</Form.Label>
+                              <Form.Label>ชื่อเอกสาร</Form.Label>
                               <Form.Control
                                 {...register("title", { required: true })}
                               />
@@ -476,11 +528,15 @@ const blogs = () => {
                                 </span>
                               )}
                             </Form.Group>
-                            <Form.Group as={Col} md="12">
-                              <Form.Label>Content</Form.Label>
-                              <Form.Control
+                            <Form.Group
+                              as={Col} md="12"
+                                controlId="exampleForm.ControlTextarea1"
+                              >
+                                <Form.Label>รายละเอียด</Form.Label>
+                                <Form.Control as="textarea" rows={3} 
+                                placeholder="Enter your content"
                                 {...register("content", { required: true })}
-                              />
+                                />
                               {errors.content && (
                                 <span className="text-danger">
                                   This field is required
@@ -488,10 +544,28 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Category</Form.Label>
-                              <Form.Control
+                              <Form.Label>ประเภท</Form.Label>
+                               <select
+                                className="form-control"
+                                aria-label="Default select example"
                                 {...register("category", { required: true })}
-                              />
+                              >
+                                <option selected value="">
+                                  เลือกประเภท
+                                </option>
+                                <option value="เอกสารบริษัท">
+                                  เอกสารบริษัท
+                                </option>
+                                <option value="เอกสารจัดซื้อ">
+                                  เอกสารจัดซื้อ
+                                </option>
+                                <option value="เอกสารประกาศ">
+                                  เอกสารประกาศ
+                                </option>
+                                <option value="เอกสารทั่วไป">
+                                  เอกสารทั่วไป
+                                </option>
+                              </select>
                               {errors.category && (
                                 <span className="text-danger">
                                   This field is required
@@ -499,10 +573,24 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Department</Form.Label>
-                              <Form.Control
+                              <Form.Label>หน่วยงาน</Form.Label>
+                              {/* <Form.Control
                                 {...register("department", { required: true })}
-                              />
+                              /> */}
+                              <select
+                                className="form-control"
+                                aria-label="Default select example"
+                                {...register("department", { required: true })}
+                              >
+                                <option selected value="">
+                                  เลือกหน่วยงาน
+                                </option>
+                                <option value="การขาย">การขาย</option>
+                                <option value="การตลาด">การตลาด</option>
+                                <option value="ไอที">ไอที</option>
+                                <option value="ฝ่ายบุคคล">ฝ่ายบุคคล</option>
+                                <option value="ฝ่ายวางแผน">ฝ่ายวางแผน</option>
+                              </select>
                               {errors.department && (
                                 <span className="text-danger">
                                   This field is required
@@ -510,7 +598,7 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group as={Col} md="12">
-                              <Form.Label>Author</Form.Label>
+                              <Form.Label>จัดทำโดย</Form.Label>
                               <Form.Control
                                 readOnly
                                 {...register("author", { required: true })}
@@ -522,7 +610,7 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <div className="form-group ml-2">
-                              <label htmlFor="">File upload</label>
+                              <label htmlFor="">ไฟล์อัพโหลด</label>
                               <br />
                               <input
                                 type="file"
@@ -543,7 +631,7 @@ const blogs = () => {
                           variant="primary"
                           onClick={handleSubmit(handleEditSubmit)}
                         >
-                          Save Changes
+                          Submit
                         </Button>
                         <Button variant="secondary" onClick={EditClose}>
                           Close
@@ -554,26 +642,38 @@ const blogs = () => {
                     {/* View Blog Madal */}
                     <Modal centered show={viewShow}>
                       <Modal.Header>
-                        <Modal.Title>Webboard view</Modal.Title>
+                        <Modal.Title>รายละเอียดเอกสาร</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <Form.Group>
-                          <Form.Label>Title</Form.Label> : {title}
+                          <Form.Label>ชื่อเอกสาร</Form.Label> : {title}
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Content</Form.Label> : {content}
+                          <Form.Label>รายละเอียด</Form.Label> : {content}
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Category</Form.Label> : {category}
+                          <Form.Label>ประเภท</Form.Label> : {category}
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Department</Form.Label> : {department}
+                          <Form.Label>หน่วยงาน</Form.Label> : {department}
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Author</Form.Label> : {author}
+                          <Form.Label>จัดทำโดย</Form.Label> : {author}
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Created</Form.Label> :{" "}
+                          <Form.Label>ไฟล์เอกสาร</Form.Label> :{" "}
+                          <a
+                            href={
+                              "https://full-stack-app.com/laravel_auth_jwt_api/public/uploads/documents/" +
+                              path
+                            }
+                            target="_blank"
+                          >
+                            ดาวน์โหลด
+                          </a>
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Label>วันที่จัดทำ</Form.Label> :{" "}
                           {dayjs(created).format("DD-MMMM-YYYY")}
                         </Form.Group>
                       </Modal.Body>
