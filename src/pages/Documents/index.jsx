@@ -280,9 +280,10 @@ const blogs = () => {
                       </div>
                     </div>
                     <DataTable
-                      // style={{
-                      //   fontFamily: "Prompt",
-                      // }}
+                      style={{
+                        fontFamily: "Prompt",
+                      }}
+                    
                       withBorder
                       highlightOnHover
                       fontSize={"md"}
