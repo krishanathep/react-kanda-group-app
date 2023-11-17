@@ -1,10 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { RequireAuth } from "react-auth-kit";
+
 import WithNavbar from "./layouts/WithNavbar";
 import WithOutnavbar from "./layouts/WithOutnavbar";
+
 import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
+
 import Home from './pages/Home'
 import Documents from './pages/Documents'
 

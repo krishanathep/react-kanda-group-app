@@ -41,7 +41,6 @@ const blogs = () => {
       content: "",
       category: "",
       department: "",
-      author: "",
     });
     setViewShow(false);
   };
@@ -90,6 +89,78 @@ const blogs = () => {
         setLoading(false);
       });
   };
+
+  //filter function by title
+  async function titleFilter(key) {
+
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize;
+
+    await axios
+      .get(
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-filter-title?data=" +
+          key
+      )
+      .then((res) => {
+        setBlogs(res.data.document);
+        setRecords(res.data.document.slice(from, to));
+        setLoading(false);
+      });
+  }
+
+  //filter function by content
+  async function contentFilter(key) {
+
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize;
+
+    await axios
+      .get(
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-filter-content?data=" +
+          key
+      )
+      .then((res) => {
+        setBlogs(res.data.document);
+        setRecords(res.data.document.slice(from, to));
+        setLoading(false);
+      });
+  }
+
+  //filter function by category
+  async function categoryFilter(key) {
+
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize;
+
+    await axios
+      .get(
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-filter-category?data=" +
+          key
+      )
+      .then((res) => {
+        setBlogs(res.data.document);
+        setRecords(res.data.document.slice(from, to));
+        setLoading(false);
+      });
+  }
+
+  //filter function by department
+  async function departmentFilter(key) {
+
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize;
+
+    await axios
+      .get(
+        "https://full-stack-app.com/laravel_auth_jwt_api/public/api/document-filter-department?data=" +
+          key
+      )
+      .then((res) => {
+        setBlogs(res.data.document);
+        setRecords(res.data.document.slice(from, to));
+        setLoading(false);
+      });
+  }
 
   useEffect(() => {
     getData();
@@ -227,7 +298,6 @@ const blogs = () => {
           content: "",
           category: "",
           department: "",
-          author: "",
         });
         setCreateShow(false);
         Swal.fire({
@@ -277,6 +347,79 @@ const blogs = () => {
                           >
                             <i className="fa fa-plus"></i> เพิ่มเอกสาร
                           </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="card">
+                          <div className="card-body">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="ชื่อเอกสาร"
+                                  onChange={(event) =>
+                                    titleFilter(event.target.value)
+                                  }
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="รายละเอียด"
+                                  onChange={(event) =>
+                                    contentFilter(event.target.value)
+                                  }
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <select
+                                  className="form-control"
+                                  aria-label="Default select example"
+                                  onChange={(event) =>
+                                    categoryFilter(event.target.value)
+                                  }
+                                >
+                                  <option selected value="">
+                                    เลือกประเภท
+                                  </option>
+                                  <option value="เอกสารบริษัท">
+                                    เอกสารบริษัท
+                                  </option>
+                                  <option value="เอกสารจัดซื้อ">
+                                    เอกสารจัดซื้อ
+                                  </option>
+                                  <option value="เอกสารประกาศ">
+                                    เอกสารประกาศ
+                                  </option>
+                                  <option value="เอกสารทั่วไป">
+                                    เอกสารทั่วไป
+                                  </option>
+                                </select>
+                              </div>
+                              <div className="col-md-3">
+                                <select
+                                  className="form-control"
+                                  aria-label="Default select example"
+                                  onChange={(event) =>
+                                    departmentFilter(event.target.value)
+                                  }
+                                >
+                                  <option selected value="">
+                                    เลือกหน่วยงาน
+                                  </option>
+                                  <option value="การขาย">การขาย</option>
+                                  <option value="การตลาด">การตลาด</option>
+                                  <option value="ไอที">ไอที</option>
+                                  <option value="ฝ่ายบุคคล">ฝ่ายบุคคล</option>
+                                  <option value="ฝ่ายวางแผน">ฝ่ายวางแผน</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -388,19 +531,22 @@ const blogs = () => {
                             </Form.Group>
                             {/* <Form.Group as={Col} md="12">
                               <Form.Label>รายละเอียด</Form.Label> */}
-                              {/* <Form.Control
+                            {/* <Form.Control
                                 placeholder="Enter your content"
                                 {...register("content", { required: true })}
                               /> */}
-                              <Form.Group
-                              as={Col} md="12"
-                                controlId="exampleForm.ControlTextarea1"
-                              >
-                                <Form.Label>รายละเอียด</Form.Label>
-                                <Form.Control as="textarea" rows={3} 
+                            <Form.Group
+                              as={Col}
+                              md="12"
+                              controlId="exampleForm.ControlTextarea1"
+                            >
+                              <Form.Label>รายละเอียด</Form.Label>
+                              <Form.Control
+                                as="textarea"
+                                rows={3}
                                 placeholder="Enter your content"
                                 {...register("content", { required: true })}
-                                />
+                              />
                               {errors.content && (
                                 <span className="text-danger">
                                   This field is required
@@ -529,14 +675,17 @@ const blogs = () => {
                               )}
                             </Form.Group>
                             <Form.Group
-                              as={Col} md="12"
-                                controlId="exampleForm.ControlTextarea1"
-                              >
-                                <Form.Label>รายละเอียด</Form.Label>
-                                <Form.Control as="textarea" rows={3} 
+                              as={Col}
+                              md="12"
+                              controlId="exampleForm.ControlTextarea1"
+                            >
+                              <Form.Label>รายละเอียด</Form.Label>
+                              <Form.Control
+                                as="textarea"
+                                rows={3}
                                 placeholder="Enter your content"
                                 {...register("content", { required: true })}
-                                />
+                              />
                               {errors.content && (
                                 <span className="text-danger">
                                   This field is required
@@ -545,7 +694,7 @@ const blogs = () => {
                             </Form.Group>
                             <Form.Group as={Col} md="12">
                               <Form.Label>ประเภท</Form.Label>
-                               <select
+                              <select
                                 className="form-control"
                                 aria-label="Default select example"
                                 {...register("category", { required: true })}
